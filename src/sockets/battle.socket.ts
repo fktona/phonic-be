@@ -103,11 +103,11 @@ const setupDebate = (room: string, topic: string) => {
     {
       role: 'system',
       content: `### Rules:
-1. 2 turns per agent.
+1. 4 turns per agent.
 2. **${agent1.name}** starts the debate.
 3. Each turn should be concise and relevant (max 3 sentences).
-4. Make Sure to always mention your opponent's name in your response.
-5. Closing arguments on the 5th turn.`
+4. always try to mention your opponent's name in your response.
+5. Closing arguments on the 4th turn.`
     },
     {
       role: 'system',
@@ -129,7 +129,7 @@ const startConversation = async (room: string) => {
 
   let turnCount = 0;
 
-  while (turnCount < 4) {
+  while (turnCount < 8) {
     const currentAgent = state.agents[state.currentTurn];
     const opponentAgent = state.agents[1 - state.currentTurn];
 
@@ -165,7 +165,7 @@ const startConversation = async (room: string) => {
       state.currentTurn = 1 - state.currentTurn;
       turnCount++;
 
-      if (turnCount === 4) {
+      if (turnCount === 8) {
         // Wait 5 seconds before continuing after turn count reaches 10
         await new Promise((resolve) => setTimeout(resolve, 5000));
         break;
