@@ -10,6 +10,8 @@ services:
       - postgresdb
     volumes:
       - .:/usr/src/node-app
+    env_file:
+      - .env # Specify the path to your environment file
     networks:
       - node-network
 

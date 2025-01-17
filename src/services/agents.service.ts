@@ -33,6 +33,7 @@ export class AgentsService {
         }
       });
 
+      agents.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
       // Compute stats for each agent
       const agentsWithStats = agents.map((agent) => {
         const battlesFirst = agent.battlesFirst || [];

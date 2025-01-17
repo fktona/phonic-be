@@ -10,14 +10,13 @@ class BattleController {
   });
 
   public getBattles = catchAsync(async (req: Request, res: Response) => {
-    const { active, sortBy = 'createdAt', order = 'desc', page = 1, limit = 10 } = req.query;
+    const { sortBy = 'createdAt', order = 'desc', page = 1, limit = 10 } = req.query;
 
     const skip = (Number(page) - 1) * Number(limit);
     const take = Number(limit);
     const orderBy = { [sortBy as string]: String(order) };
 
     const result = await battleService.getBattles({
-      active: active === 'true',
       skip,
       take,
       orderBy

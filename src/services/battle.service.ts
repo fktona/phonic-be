@@ -49,17 +49,9 @@ class BattleService {
     return battle;
   }
 
-  async getBattles(query: {
-    active?: boolean;
-    skip: number;
-    take: number;
-    orderBy: Record<string, string>;
-  }) {
-    const { active, skip, take, orderBy } = query;
-
-    const where = active !== undefined ? { active } : {};
+  async getBattles(query: { skip: number; take: number; orderBy: Record<string, string> }) {
+    const { skip, take, orderBy } = query;
     const battles = await prisma.battle.findMany({
-      where,
       skip,
       take,
       orderBy,
@@ -69,7 +61,7 @@ class BattleService {
       }
     });
 
-    const total = await prisma.battle.count({ where });
+    const total = await prisma.battle.count();
 
     return { battles, total };
   }
