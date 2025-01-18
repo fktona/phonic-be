@@ -1,6 +1,5 @@
 import axios from 'axios';
 import prisma from '../client';
-import exp from 'constants';
 
 const fetchMarketCap = async (tokenAddress: string): Promise<number | null> => {
   try {
