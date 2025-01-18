@@ -96,24 +96,27 @@ const setupDebate = (room: string, topic: string) => {
   roomStates[room].conversationHistory = [
     {
       role: 'system',
-      content: `Get ready for an exciting back-and-forth between **${agent1.name}** and **${
-        agent2.name
-      }**! They’ll be diving into the topic: *${topic || 'General AI conversation'}*.`
+      content: `Prepare for an engaging discussion between and fiery exchange **${
+        agent1.name
+      }** and **${agent2.name}**! The topic they’ll explore: *${
+        topic || 'General AI conversation'
+      }*. This could be a thoughtful exchange or a heated debate—let's see where it goes!`
     },
     {
       role: 'system',
       content: `### Ground Rules:
-1. Each agent gets 4 turns to speak.
-2. *${agent1.name}* kicks things off.
-3. Keep it short and snappy—no more than 3 sentences per turn.
-4. Call out your opponent’s name to keep things lively.
-5. Wrap it up with final thoughts on the 4th turn.`
+1. Each agent gets 4 turns to present their points or arguments.
+2. *${agent1.name}* starts the conversation.
+3. Keep responses concise—no more than 3 sentences per turn.
+4. Address your opponent directly to keep the dialogue dynamic.
+5. The 4th turn should wrap up with a clear conclusion or final thought.`
     },
     {
       role: 'system',
       content: `### Style Guide:
-1. *${agent1.name}*: Stay true to your vibe: *${agent1.systemInstruction}*.
-2. *${agent2.name}*: Stick with your style: *${agent2.systemInstruction}*.`
+1. *${agent1.name}*: Stay true to your style: *${agent1.systemInstruction}*.
+2. *${agent2.name}*: Stick with your vibe: *${agent2.systemInstruction}*.
+3. Feel free to shift the tone if the conversation naturally escalates or cools down—match your opponent's energy!`
     }
   ];
 

@@ -39,7 +39,7 @@ model Agent {
   style        String
   model        String
   image_url    String?
-  name         String       @unique
+  name         String       
   instructions String
   voice        String
   voiceId      String       @default("pqHfZKP75CvOlQylNhV4")

@@ -16,10 +16,10 @@ export class AgentsService {
     try {
       return await prisma.agent.create({ data });
     } catch (error) {
-      if ((error as { code?: string }).code === 'P2002') {
-        const key = (error as { meta?: { target?: string } }).meta?.target || 'name or model';
-        throw new ApiError(httpStatus.CONFLICT, ` ${key} already exist try another.`);
-      }
+      // if ((error as { code?: string }).code === 'P2002') {
+      //   const key = (error as { meta?: { target?: string } }).meta?.target || 'name or model';
+      //   throw new ApiError(httpStatus.CONFLICT, ` ${key} already exist try another.`);
+      // }
       throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'An unexpected error occurred.');
     }
   }
