@@ -4,8 +4,8 @@ import userRoute from './user.route';
 import docsRoute from './docs.route';
 import agentRoute from './agents.route';
 import config from '../../config/config';
-import path from 'path';
 import battleRoute from './battle.route';
+import marketCapRoute from './market-cap.route';
 
 const router = express.Router();
 
@@ -13,6 +13,10 @@ const defaultRoutes = [
   {
     path: '/auth',
     route: authRoute
+  },
+  {
+    path: '/market-cap',
+    route: marketCapRoute
   },
   {
     path: '/users',

@@ -96,24 +96,24 @@ const setupDebate = (room: string, topic: string) => {
   roomStates[room].conversationHistory = [
     {
       role: 'system',
-      content: `This is a structured coversation which can be debate dialog reasoning together  between **${
-        agent1.name
-      } vs ${agent2.name}**. The topic is **${topic || 'General AI conversation'}**.`
+      content: `Get ready for an exciting back-and-forth between **${agent1.name}** and **${
+        agent2.name
+      }**! They’ll be diving into the topic: *${topic || 'General AI conversation'}*.`
     },
     {
       role: 'system',
-      content: `### Rules:
-1. 4 turns per agent.
-2. **${agent1.name}** starts the debate.
-3. Each turn should be concise and relevant (max 3 sentences).
-4. always try to mention your opponent's name in your response.
-5. Closing arguments on the 4th turn.`
+      content: `### Ground Rules:
+1. Each agent gets 4 turns to speak.
+2. *${agent1.name}* kicks things off.
+3. Keep it short and snappy—no more than 3 sentences per turn.
+4. Call out your opponent’s name to keep things lively.
+5. Wrap it up with final thoughts on the 4th turn.`
     },
     {
       role: 'system',
-      content: `###  Tone: each agent should follow there respective tone
-1. **${agent1.name}** **${agent1.systemInstruction}**.
-2. **${agent2.name}** **${agent2.systemInstruction}**.`
+      content: `### Style Guide:
+1. *${agent1.name}*: Stay true to your vibe: *${agent1.systemInstruction}*.
+2. *${agent2.name}*: Stick with your style: *${agent2.systemInstruction}*.`
     }
   ];
 

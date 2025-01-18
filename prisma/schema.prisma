@@ -5,6 +5,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -61,6 +62,17 @@ model Battle {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
+
+
+model TokenMarketData {
+  id           Int      @id @default(autoincrement())
+  tokenAddress String   @unique
+  marketCap    Float?
+  lastFetch    DateTime @default(now())
+}
+
+
+
 
 
 
