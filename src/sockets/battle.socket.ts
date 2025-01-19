@@ -4,6 +4,7 @@ import logger from '../config/logger';
 import OpenAI from 'openai';
 import WebSocket from 'ws';
 import { ElevenLabsClient } from 'elevenlabs';
+import { generateSpeech } from '../utils/new-voce';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const client = new ElevenLabsClient({ apiKey: process.env.ELEVEN_LAB_API_KEY });
@@ -156,7 +157,12 @@ const startConversation = async (room: string) => {
 
       console.log('AI Response:', reply);
 
-      const audioResponse = await createAudioBase64FromText(currentAgent.voiceId, reply);
+      const audioResponse =
+        currentAgent.id == 'cm63t4w2z0000u7sopioa0zj5'
+          ? await generateSpeech(reply)
+          : await createAudioBase64FromText(currentAgent.voiceId, reply);
+
+      console.log('Audio Response:', audioResponse);
 
       io.to(room).emit('ai-reply', {
         agentId: currentAgent.id,
