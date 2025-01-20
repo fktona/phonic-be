@@ -12,7 +12,13 @@ const client = new ElevenLabsClient({ apiKey: process.env.ELEVEN_LAB_API_KEY });
 let io: SocketIOServer;
 
 interface RoomState {
-  agents: { id: string; name: string; systemInstruction: string; voiceId: string }[];
+  agents: {
+    id: string;
+    name: string;
+    systemInstruction: string;
+    voiceId: string;
+    firstMessage?: string;
+  }[];
   currentTurn: number;
   conversationHistory: { role: string; content: string }[];
 }
@@ -78,7 +84,13 @@ const connectToWebSocket = async (voiceId: string, text: string): Promise<void> 
 // Room Management
 const initializeRoom = (
   room: string,
-  agent: { id: string; name: string; systemInstruction: string; voiceId: string }
+  agent: {
+    id: string;
+    name: string;
+    systemInstruction: string;
+    voiceId: string;
+    firstMessage?: string;
+  }
 ) => {
   if (!roomStates[room]) {
     roomStates[room] = {
@@ -151,16 +163,15 @@ const startConversation = async (room: string) => {
         model: MODEL,
         messages: turnHistory as any
       });
-
+      console.log('AI Response:', currentAgent?.firstMessage);
       const reply = response.choices[0]?.message?.content || 'No response';
       state.conversationHistory.push({ role: 'assistant', content: reply });
 
       console.log('AI Response:', reply);
 
-      const audioResponse =
-        currentAgent.id == 'cm63t4w2z0000u7sopioa0zj5'
-          ? await generateSpeech(reply)
-          : await createAudioBase64FromText(currentAgent.voiceId, reply);
+      const audioResponse = currentAgent?.firstMessage
+        ? await generateSpeech(reply, currentAgent.voiceId)
+        : await createAudioBase64FromText(currentAgent.voiceId, reply);
 
       console.log('Audio Response:', audioResponse);
 
@@ -168,6 +179,7 @@ const startConversation = async (room: string) => {
         agentId: currentAgent.id,
         name: currentAgent.name,
         message: reply,
+        firstMessage: currentAgent?.firstMessage,
         audioResponse
       });
 
@@ -209,20 +221,25 @@ export const initializeSocket = (server: HttpServer) => {
   });
 
   io.on('connection', (socket) => {
-    socket.on('join-battle', ({ battleId, agentId, SystemInstruction, topic, name, voiceId }) => {
-      const room = `battle-${battleId}`;
-      socket.join(room);
+    socket.on(
+      'join-battle',
+      ({ battleId, agentId, SystemInstruction, topic, name, voiceId, firstMessage }) => {
+        console.log('Joining battle:', battleId, agentId, name, voiceId, firstMessage);
+        const room = `battle-${battleId}`;
+        socket.join(room);
 
-      initializeRoom(room, {
-        id: agentId,
-        name,
-        voiceId,
-        systemInstruction:
-          SystemInstruction || `You are ${name}, an AI engaging in a structured debate.`
-      });
+        initializeRoom(room, {
+          id: agentId,
+          name,
+          voiceId,
+          firstMessage,
+          systemInstruction:
+            SystemInstruction || `You are ${name}, an AI engaging in a structured debate.`
+        });
 
-      if (roomStates[room].agents.length === 2) setupDebate(room, topic);
-    });
+        if (roomStates[room].agents.length === 2) setupDebate(room, topic);
+      }
+    );
 
     socket.on('disconnect', () => {
       logger.info(`User disconnected: ${socket.id}`);

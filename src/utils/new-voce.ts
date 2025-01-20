@@ -1,4 +1,4 @@
-export async function generateSpeech(text: string): Promise<string> {
+export async function generateSpeech(text: string, voiceId: string): Promise<string> {
   if (!text) {
     throw new Error('Text is required to generate speech');
   }
@@ -16,7 +16,7 @@ export async function generateSpeech(text: string): Promise<string> {
     },
     body: JSON.stringify({
       text: text,
-      speaker: '7f954f14-55fa-11ef-a7a0-00163e0e200f',
+      speaker: voiceId,
       emotion: 'proud confident'
     })
   };
