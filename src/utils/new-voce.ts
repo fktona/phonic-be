@@ -16,7 +16,7 @@ export async function generateSpeech(text: string, voiceId: string): Promise<str
     },
     body: JSON.stringify({
       text: text,
-      speaker: voiceId,
+      speaker: '00156cf2-3826-11ee-a861-00163e2ac61b',
       emotion: 'proud confident'
     })
   };
@@ -24,7 +24,7 @@ export async function generateSpeech(text: string, voiceId: string): Promise<str
   try {
     const response = await fetch('https://api.topmediai.com/v1/text2speech', options);
     const data = await response.json();
-
+    console.log(data);
     if (data.status === 200 && data.data.oss_url) {
       // Fetch the audio file content
       const audioResponse = await fetch(data.data.oss_url);
